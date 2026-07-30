@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abhijith M Vijayan — Data Analyst / Data Scientist / AI Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B1120;
+    --bg-panel:#0F1729;
+    --bg-panel-2:#131D33;
+    --line:#233152;
+    --text:#EDEFF4;
+    --text-dim:#8B97B5;
+    --text-dimmer:#5B6785;
+    --signal:#5EEAD4;
+    --signal-dim:#2C6E68;
+    --amber:#F5A623;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+  a{color:inherit;text-decoration:none;}
+  ::selection{background:var(--signal-dim); color:var(--text);}
+
+  .noise{
+    position:fixed; inset:0; pointer-events:none; z-index:1;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+    opacity:0.5;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 40px;
+    background:rgba(11,17,32,0.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-brand{
+    font-family:var(--mono); font-weight:700; font-size:14px;
+    letter-spacing:0.02em;
+    color:var(--text);
+  }
+  .nav-brand span{color:var(--signal);}
+  .nav-links{display:flex; gap:32px; font-family:var(--mono); font-size:13px;}
+  .nav-links a{color:var(--text-dim); transition:color 0.2s ease; position:relative;}
+  .nav-links a:hover{color:var(--signal);}
+  .nav-links a:focus-visible, a:focus-visible, button:focus-visible{
+    outline:2px solid var(--signal); outline-offset:3px; border-radius:2px;
+  }
+  .nav-toggle{display:none;}
+
+  @media (max-width:760px){
+    .nav-links{display:none;}
+    nav{padding:16px 20px;}
+  }
+
+  section{
+    padding:120px 40px;
+    max-width:1080px;
+    margin:0 auto;
+  }
+  @media (max-width:760px){
+    section{padding:80px 20px;}
+  }
+
+  .eyebrow{
+    font-family:var(--mono); font-size:12px; color:var(--signal);
+    letter-spacing:0.12em; text-transform:uppercase;
+    display:flex; align-items:center; gap:10px; margin-bottom:20px;
+  }
+  .eyebrow::before{
+    content:''; width:8px; height:8px; background:var(--signal);
+    display:inline-block; animation:blink 2s ease-in-out infinite;
+  }
+  @keyframes blink{0%,100%{opacity:1;} 50%{opacity:0.3;}}
+
+  h1,h2,h3{font-family:var(--sans); font-weight:800; letter-spacing:-0.02em;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:100vh;
+    display:flex; flex-direction:column; justify-content:center;
+    padding-top:120px;
+    position:relative;
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1.2fr 1fr; gap:60px; align-items:end;
+  }
+  @media (max-width:900px){
+    .hero-grid{grid-template-columns:1fr;}
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 6vw, 4.6rem);
+    line-height:1.05;
+    margin-bottom:24px;
+  }
+  .hero h1 .accent{color:var(--signal);}
+  .hero p.lede{
+    font-size:1.15rem; color:var(--text-dim); max-width:520px; margin-bottom:36px;
+  }
+  .hero-cta{display:flex; gap:16px; flex-wrap:wrap;}
+  .btn{
+    font-family:var(--mono); font-size:13px; font-weight:600;
+    padding:14px 24px; border-radius:2px; border:1px solid var(--line);
+    transition:all 0.2s ease; display:inline-flex; align-items:center; gap:8px;
+    cursor:pointer;
+  }
+  .btn-primary{background:var(--signal); color:#06201D; border-color:var(--signal);}
+  .btn-primary:hover{background:#78F2E1; transform:translateY(-2px);}
+  .btn-ghost{color:var(--text); background:transparent;}
+  .btn-ghost:hover{border-color:var(--signal); color:var(--signal); transform:translateY(-2px);}
+
+  /* model card readout - signature element */
+  .model-card{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:4px;
+    font-family:var(--mono);
+    font-size:12.5px;
+    overflow:hidden;
+  }
+  .model-card-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:12px 16px; border-bottom:1px solid var(--line);
+    background:var(--bg-panel-2);
+    color:var(--text-dimmer);
+  }
+  .model-card-head .dots{display:flex; gap:6px;}
+  .model-card-head .dots span{width:8px; height:8px; border-radius:50%; background:var(--line);}
+  .model-card-body{padding:18px 16px;}
+  .mc-row{
+    display:flex; justify-content:space-between; padding:8px 0;
+    border-bottom:1px dashed var(--line);
+    opacity:0; transform:translateY(6px);
+    animation:rowIn 0.5s ease forwards;
+  }
+  .mc-row:last-child{border-bottom:none;}
+  .mc-row .k{color:var(--text-dim);}
+  .mc-row .v{color:var(--signal); font-weight:700;}
+  .mc-row .v.amber{color:var(--amber);}
+  @keyframes rowIn{to{opacity:1; transform:translateY(0);}}
+  .mc-row:nth-child(1){animation-delay:0.1s;}
+  .mc-row:nth-child(2){animation-delay:0.25s;}
+  .mc-row:nth-child(3){animation-delay:0.4s;}
+  .mc-row:nth-child(4){animation-delay:0.55s;}
+  .mc-row:nth-child(5){animation-delay:0.7s;}
+
+  .scroll-hint{
+    position:absolute; bottom:30px; left:40px;
+    font-family:var(--mono); font-size:11px; color:var(--text-dimmer);
+    display:flex; align-items:center; gap:8px;
+  }
+  .scroll-hint .line{width:24px; height:1px; background:var(--text-dimmer); animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:0.3;} 50%{opacity:1;}}
+  @media (max-width:760px){.scroll-hint{display:none;}}
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:48px; flex-wrap:wrap; gap:12px;}
+  .section-head h2{font-size:clamp(1.6rem,3vw,2.2rem);}
+  .section-head .count{font-family:var(--mono); font-size:12px; color:var(--text-dimmer);}
+
+  /* ---------- PROJECTS AS DATASET CARDS ---------- */
+  .projects{display:flex; flex-direction:column; gap:1px; background:var(--line); border:1px solid var(--line); border-radius:4px; overflow:hidden;}
+  .project{
+    background:var(--bg-panel);
+    padding:32px;
+    display:grid;
+    grid-template-columns:220px 1fr;
+    gap:32px;
+    transition:background 0.25s ease;
+  }
+  .project:hover{background:var(--bg-panel-2);}
+  @media (max-width:760px){
+    .project{grid-template-columns:1fr; gap:16px; padding:24px 20px;}
+  }
+  .project-meta{font-family:var(--mono); font-size:12px; color:var(--text-dimmer);}
+  .project-meta .status{
+    display:inline-block; margin-bottom:14px;
+    color:var(--signal); border:1px solid var(--signal-dim);
+    padding:3px 8px; border-radius:2px; font-size:10.5px; letter-spacing:0.05em; text-transform:uppercase;
+  }
+  .project-meta .status.wip{color:var(--amber); border-color:#6b4d17;}
+  .project-metrics{display:flex; flex-direction:column; gap:6px; margin-top:14px;}
+  .project-metrics .m{display:flex; justify-content:space-between; font-size:11.5px; max-width:180px;}
+  .project-metrics .m .v{color:var(--text); font-weight:600;}
+
+  .project-main h3{font-size:1.35rem; margin-bottom:10px; color:var(--text);}
+  .project-main p{color:var(--text-dim); font-size:0.95rem; margin-bottom:16px; max-width:640px;}
+  .stack{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px;}
+  .stack span{
+    font-family:var(--mono); font-size:11px; color:var(--text-dim);
+    border:1px solid var(--line); padding:4px 10px; border-radius:20px;
+  }
+  .project-links{display:flex; gap:20px;}
+  .project-links a{
+    font-family:var(--mono); font-size:12px; color:var(--signal);
+    border-bottom:1px solid transparent; padding-bottom:2px;
+    transition:border-color 0.2s ease;
+  }
+  .project-links a:hover{border-color:var(--signal);}
+  .project-links a.disabled{color:var(--text-dimmer); pointer-events:none;}
+
+  /* ---------- SKILLS ---------- */
+  .skills-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:1px; background:var(--line); border:1px solid var(--line); border-radius:4px; overflow:hidden;
+  }
+  .skill-block{background:var(--bg-panel); padding:24px;}
+  .skill-block h4{
+    font-family:var(--mono); font-size:11px; color:var(--text-dimmer);
+    text-transform:uppercase; letter-spacing:0.08em; margin-bottom:14px;
+  }
+  .skill-block ul{list-style:none;}
+  .skill-block li{
+    font-size:0.9rem; color:var(--text); padding:5px 0;
+    display:flex; align-items:center; gap:8px;
+  }
+  .skill-block li::before{content:'›'; color:var(--signal); font-family:var(--mono);}
+
+  /* ---------- ABOUT / TIMELINE ---------- */
+  .about-grid{display:grid; grid-template-columns:1fr 1.4fr; gap:60px;}
+  @media (max-width:820px){.about-grid{grid-template-columns:1fr;}}
+  .about-grid p{color:var(--text-dim); margin-bottom:16px; font-size:1rem;}
+  .about-grid strong{color:var(--text); font-weight:600;}
+  .timeline{border-left:2px solid var(--line); padding-left:24px; display:flex; flex-direction:column; gap:28px;}
+  .t-item{position:relative;}
+  .t-item::before{
+    content:''; position:absolute; left:-30px; top:4px;
+    width:10px; height:10px; border-radius:50%; background:var(--signal);
+    box-shadow:0 0 0 4px rgba(94,234,212,0.15);
+  }
+  .t-item .t-date{font-family:var(--mono); font-size:11px; color:var(--signal); margin-bottom:4px; display:block;}
+  .t-item h4{font-size:1rem; margin-bottom:4px;}
+  .t-item p{color:var(--text-dim); font-size:0.9rem;}
+
+  /* ---------- CONTACT ---------- */
+  .contact{text-align:center; padding-bottom:160px;}
+  .contact h2{font-size:clamp(2rem,5vw,3.2rem); margin-bottom:20px;}
+  .contact p{color:var(--text-dim); max-width:480px; margin:0 auto 36px; font-size:1.05rem;}
+  .contact-links{display:flex; justify-content:center; gap:24px; flex-wrap:wrap;}
+
+  footer{
+    border-top:1px solid var(--line); padding:28px 40px;
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:var(--mono); font-size:11px; color:var(--text-dimmer);
+    flex-wrap:wrap; gap:8px;
+  }
+
+  .reveal{opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<div class="noise"></div>
+
+<nav>
+  <div class="nav-brand">abhijith<span>.mv</span></div>
+  <div class="nav-links">
+    <a href="#work">Work</a>
+    <a href="#skills">Skills</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-grid">
+    <div>
+      <div class="eyebrow">Data Analyst / Data Scientist / AI Developer</div>
+      <h1>Abhijith M<br><span class="accent">Vijayan</span></h1>
+      <p class="lede">I build models and dashboards that get shipped, not just notebooks that get closed. Statistics graduate, currently deep in applied AI, data science, and data analysis — attrition prediction, RAG pipelines, SQL-driven business insights, and data pipelines that turn raw numbers into a story stakeholders actually act on, with the metrics to back every claim.</p>
+      <div class="hero-cta">
+        <a href="#work" class="btn btn-primary">View projects →</a>
+        <a href="#contact" class="btn btn-ghost">Get in touch</a>
+      </div>
+    </div>
+    <div class="model-card">
+      <div class="model-card-head">
+        <span>model_card.yaml</span>
+        <div class="dots"><span></span><span></span><span></span></div>
+      </div>
+      <div class="model-card-body">
+        <div class="mc-row"><span class="k">project</span><span class="v">hr_attrition_analysis</span></div>
+        <div class="mc-row"><span class="k">algorithm</span><span class="v">XGBoost + SMOTE</span></div>
+        <div class="mc-row"><span class="k">recall</span><span class="v amber">74.5%</span></div>
+        <div class="mc-row"><span class="k">roc_auc</span><span class="v amber">77.5%</span></div>
+        <div class="mc-row"><span class="k">status</span><span class="v">deployed → Power BI</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint"><span class="line"></span> SCROLL</div>
+</section>
+
+<!-- WORK -->
+<section id="work">
+  <div class="section-head reveal">
+    <h2>Selected work</h2>
+    <span class="count">06 projects</span>
+  </div>
+
+  <div class="projects">
+
+    <div class="project reveal">
+      <div class="project-meta">
+        <span class="status">flagship</span>
+        <div class="project-metrics">
+          <div class="m"><span>Recall</span><span class="v">74.5%</span></div>
+          <div class="m"><span>ROC-AUC</span><span class="v">77.5%</span></div>
+          <div class="m"><span>High-risk flagged</span><span class="v">435</span></div>
+        </div>
+      </div>
+      <div class="project-main">
+        <h3>HR Employee Attrition Analysis</h3>
+        <p>End-to-end attrition prediction on 1,470 IBM HR records — class imbalance handled with SMOTE, three models benchmarked (Logistic Regression, Random Forest, XGBoost), and the final XGBoost model tuned via GridSearchCV for recall over accuracy, since missing a departing employee costs far more than a false alarm. SHAP explains every prediction. Overtime employees turned out 3x more likely to leave. Results feed a 3-page Power BI dashboard scoring all 1,470 employees and flagging 435 as high-risk.</p>
+        <div class="stack"><span>XGBoost</span><span>SMOTE</span><span>SHAP</span><span>GridSearchCV</span><span>Power BI</span></div>
+        <div class="project-links">
+          <a href="https://github.com/abhijith-mvijayan/hr-attrition-analysis" target="_blank" rel="noopener">GitHub repo →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project reveal">
+      <div class="project-meta">
+        <span class="status">scraper + BI</span>
+        <div class="project-metrics">
+          <div class="m"><span>Postings</span><span class="v">838</span></div>
+          <div class="m"><span>Cities</span><span class="v">8</span></div>
+          <div class="m"><span>Skill entries</span><span class="v">6,339</span></div>
+        </div>
+      </div>
+      <div class="project-main">
+        <h3>Job Market Intelligence Dashboard</h3>
+        <p>Full pipeline from scrape to dashboard: a Selenium + BeautifulSoup scraper pulls 838 live Data & AI job postings across 8 Indian cities from Naukri.com, cleaned with pandas, loaded into a normalized MySQL schema, cross-checked with an Excel pivot-table analysis, and surfaced in a 4-page Power BI dashboard. Findings: Machine Learning is the top skill (301 jobs), Hyderabad leads hiring (144 jobs), and Data Analyst is the most in-demand role (151 jobs).</p>
+        <div class="stack"><span>Selenium</span><span>BeautifulSoup</span><span>MySQL</span><span>Excel</span><span>Power BI</span></div>
+        <div class="project-links">
+          <a href="https://github.com/abhijith-mvijayan/job-market-dashboard" target="_blank" rel="noopener">GitHub repo →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project reveal">
+      <div class="project-meta">
+        <span class="status">RAG pipeline</span>
+        <div class="project-metrics">
+          <div class="m"><span>Model</span><span class="v">LLaMA 3.3</span></div>
+          <div class="m"><span>Vector DB</span><span class="v">ChromaDB</span></div>
+        </div>
+      </div>
+      <div class="project-main">
+        <h3>DocChat AI — RAG Document Chatbot</h3>
+        <p>Upload a PDF or TXT file and ask questions about it — the app retrieves the most relevant chunks via ChromaDB and Sentence Transformer embeddings, then answers through Groq's LLaMA 3.3 via a LangChain pipeline, citing the source page for every answer. Wrapped in a Streamlit UI, built for real use cases like reviewing a resume, a contract, or study notes.</p>
+        <div class="stack"><span>LangChain</span><span>ChromaDB</span><span>Groq / LLaMA 3.3</span><span>Sentence Transformers</span><span>Streamlit</span></div>
+        <div class="project-links">
+          <a href="https://github.com/abhijith-mvijayan/rag-doc-chat" target="_blank" rel="noopener">GitHub repo →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project reveal">
+      <div class="project-meta">
+        <span class="status">recommender</span>
+        <div class="project-metrics">
+          <div class="m"><span>Modes</span><span class="v">3</span></div>
+        </div>
+      </div>
+      <div class="project-main">
+        <h3>Amazon Product Recommendation System</h3>
+        <p>A modular recommendation engine supporting three strategies side by side — popularity-based ranking, user-based collaborative filtering, and SVD matrix factorization — with ML logic cleanly separated from the interactive Streamlit UI so new models can be dropped in without touching the app.</p>
+        <div class="stack"><span>SVD</span><span>Collaborative Filtering</span><span>scikit-learn</span><span>Streamlit</span></div>
+        <div class="project-links">
+          <a href="https://github.com/abhijith-mvijayan/amazon-recommendation-system" target="_blank" rel="noopener">GitHub repo →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project reveal">
+      <div class="project-meta">
+        <span class="status">SQL / EDA</span>
+        <div class="project-metrics">
+          <div class="m"><span>Records</span><span class="v">318,438</span></div>
+        </div>
+      </div>
+      <div class="project-main">
+        <h3>Healthcare Analytics — Hospital Patient Stay Analysis</h3>
+        <p>Pure SQL analysis of 318,438 hospital patient records, using window functions, conditional aggregation, and data binning to answer real operational questions. Surgery has the highest long-stay rate (29.73%), Ward S carries 4x the extreme-stay burden of Ward Q, and Hospital 25 flags as the top long-stay outlier — the kind of findings that actually change how a hospital allocates beds.</p>
+        <div class="stack"><span>MySQL</span><span>Window Functions</span><span>SQL</span></div>
+        <div class="project-links">
+          <a href="https://github.com/abhijith-mvijayan/SQL-Healthcare-Analytics-Hospital-Patient-Stay-Analysis" target="_blank" rel="noopener">GitHub repo →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project reveal">
+      <div class="project-meta">
+        <span class="status">EDA</span>
+        <div class="project-metrics">
+          <div class="m"><span>Orders</span><span class="v">51,290</span></div>
+          <div class="m"><span>Rev. growth</span><span class="v">+90%</span></div>
+        </div>
+      </div>
+      <div class="project-main">
+        <h3>SuperStore Sales Analysis</h3>
+        <p>Exploratory analysis of 51,290 global retail orders (2011–2014) across 7 markets. Revenue grew 90% over the period, but 22% of orders carry discounts above 20% — directly causing losses of up to $99/order. EMEA is the weakest market at 5.4% margin against an 11.6% company average, while Home Office is the fastest-growing segment at +119.5%. Findings translated into ranked business recommendations, not just charts.</p>
+        <div class="stack"><span>pandas</span><span>matplotlib</span><span>seaborn</span></div>
+        <div class="project-links">
+          <a href="https://github.com/abhijith-mvijayan/superstore-analysis" target="_blank" rel="noopener">GitHub repo →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-head reveal">
+    <h2>Toolkit</h2>
+    <span class="count">by category</span>
+  </div>
+  <div class="skills-grid reveal">
+    <div class="skill-block">
+      <h4>Modeling</h4>
+      <ul>
+        <li>XGBoost / GridSearchCV</li>
+        <li>SMOTE for class imbalance</li>
+        <li>SHAP for explainability</li>
+        <li>SVD / Collaborative Filtering</li>
+        <li>YOLOv8 / Computer Vision</li>
+      </ul>
+    </div>
+    <div class="skill-block">
+      <h4>LLM / RAG</h4>
+      <ul>
+        <li>LangChain</li>
+        <li>ChromaDB</li>
+        <li>Groq / LLaMA 3.3</li>
+        <li>Streamlit</li>
+      </ul>
+    </div>
+    <div class="skill-block">
+      <h4>Data & Languages</h4>
+      <ul>
+        <li>Python (pandas, NumPy)</li>
+        <li>SQL / MySQL</li>
+        <li>R (basic)</li>
+        <li>Power BI</li>
+      </ul>
+    </div>
+    <div class="skill-block">
+      <h4>Engineering</h4>
+      <ul>
+        <li>Selenium web scraping</li>
+        <li>OpenCV / pytesseract</li>
+        <li>Git / GitHub</li>
+        <li>Streamlit deployment</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="reveal">
+      <div class="eyebrow">About</div>
+      <p><strong>Statistics graduate</strong> (Sree Sankara College, Kalady, MG University, 2025) who moved straight into applied ML training rather than stopping at the degree.</p>
+      <p>Currently completing a <strong>9-month Data Science & AI training internship</strong> at Luminar Technolab, Kochi, and starting an <strong>MSc in Data Science and Analytics</strong> (IGNOU) this fall.</p>
+      <p>Based in Kerala, open to remote roles across India. Looking for Data Analyst, Data Scientist, and AI Developer positions where the work is judged on results, not buzzwords.</p>
+    </div>
+    <div class="reveal">
+      <div class="timeline">
+        <div class="t-item">
+          <span class="t-date">2025</span>
+          <h4>BSc Statistics</h4>
+          <p>Sree Sankara College, Kalady — Mahatma Gandhi University</p>
+        </div>
+        <div class="t-item">
+          <span class="t-date">Jun 2025 – Feb 2026</span>
+          <h4>Data Science & AI Training Internship</h4>
+          <p>Luminar Technolab, Kochi — applied ML, six portfolio projects built and shipped</p>
+        </div>
+        <div class="t-item">
+          <span class="t-date">Aug/Sep 2026</span>
+          <h4>MSc Data Science & Analytics — begins</h4>
+          <p>IGNOU (ODL) — Semester 1 starting</p>
+        </div>
+        <div class="t-item">
+          <span class="t-date">Now</span>
+          <h4>Actively job hunting</h4>
+          <p>Data Analyst / Data Scientist / AI Developer roles, Kerala + remote</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact">
+  <div class="reveal">
+    <div class="eyebrow" style="justify-content:center;">Get in touch</div>
+    <h2>Let's talk data.</h2>
+    <p>Open to Data Analyst, Data Scientist, and AI Developer roles — Kerala-based or remote. Reach out directly.</p>
+    <div class="contact-links">
+      <a href="mailto:abhijithmvijayan2307@gmail.com" class="btn btn-primary">Email me →</a>
+      <a href="https://github.com/abhijith-mvijayan" target="_blank" rel="noopener" class="btn btn-ghost">GitHub</a>
+      <a href="https://linkedin.com/in/abhijith-m-vijayan-767983362" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Abhijith M Vijayan</span>
+  <span>Built with HTML / CSS / JS — no framework</span>
+</footer>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.15});
+  revealEls.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
